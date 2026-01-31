@@ -27,7 +27,7 @@ public class UserService {
 
     // SMELL: Unused method
     public void notUsed() {
-        System.out.println("I am never called");
+        System.out.println("I m never called");
     }
 
     // EVEN WORSE: another SQL injection
