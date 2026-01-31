@@ -2,6 +2,7 @@ package main.java.com.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class UserService {
@@ -30,17 +31,16 @@ public class UserService {
     }
 
     // EVEN WORSE: another SQL injection
-    public void deleteUser(String username) throws Exception {
+    public void deleteUser(String username)  {
     
-        Connection conn =
-            DriverManager.getConnection("jdbc:mysql://localhost/db",
-            "root", password);
-            
-            Statement st = conn.createStatement();
+         String sql = "DELETE FROM users WHERE name = ?";
 
-            String query =
-                "DELETE FROM users WHERE name = '" + username + "'";
-            
-            st.execute(query);
+    try (Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost/db", "root", password);
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, username);
+        ps.executeUpdate();
+    }
     }
 }
